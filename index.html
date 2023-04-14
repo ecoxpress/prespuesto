@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>presupuesto</title>
+    <link rel="stylesheet" href="main.css" />
+    <script
+      type="text/javascript"
+      src="http://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=5EH9yotScnMXAYaCzT08uUhNhh1GeEKdX4HvDpBrWeJ8rurA-tsbfJEJQ51ryE2FBxJvIsdqcp-mqb8lG454aw"
+      charset="UTF-8"
+    ></script>
+  </head>
+  <body>
+    <div class="control-bar">
+      <div class="container">
+        <div class="row">
+          <div class="col-2-4">
+            <div class="slogan" contenteditable>Presupuesto</div>
+
+            <label for="config_tax"
+              >IVA:
+              <input type="checkbox" id="config_tax" />
+            </label>
+            <label for="config_tax_rate" class="taxrelated"
+              >Tasa: <input type="text" id="config_tax_rate" value="21" />%
+            </label>
+            <label for="config_note"
+              >Nota:
+              <input type="checkbox" id="config_note" />
+            </label>logoholder
+          </div>
+          <div class="col-4 text-right">
+            <a href="javascript:window.print()">Imprimir</a>
+          </div>
+          <!--.col-->
+        </div>
+        <!--.row-->
+      </div>
+      <!--.container-->
+    </div>
+    <!--.control-bar-->
+
+    <header class="row">
+      <div class="logoholder text-center">
+        <img src="image/menbrete.svg" />
+      </div>
+      <!--.logoholder-->
+    </header>
+
+    <div class="row section">
+      <div class="col-2">
+        <h1>Presupuesto</h1>
+      </div>
+      <!--.col-->
+
+      <div class="col-2 text-right details">
+        <p contenteditable>
+          Presupuesto N°<input type="text" value="100" /><br />
+          A nombre de<br />
+          Fecha: <input type="text" class="datePicker" /><br />          
+          Presupuesto Vence: <input class="twoweeks" type="text" />
+        </p>
+      </div>
+      <!--.col-->      
+    </div>
+    <!--.row-->
+
+    <div class="invoicelist-body">
+      <table>
+        <thead>
+          <th width="5%">Código</th>
+          <th width="60%">Descripción</th>
+
+          <th width="10%">Cant.</th>
+          <th width="15%">Precio</th>
+          <th class="taxrelated">IVA</th>
+          <th width="10%">Total</th>
+        </thead>
+        <tbody>
+          <tr>
+            <td width="5%">
+              <a class="control removeRow" href="#">x</a>
+              <span contenteditable>00000</span>
+            </td>
+            <td width="60%"><span contenteditable>Descripción</span></td>
+            <td class="amount"><input type="text" value="1" /></td>
+            <td class="rate"><input type="text" value="99" /></td>
+            <td class="tax taxrelated"></td>
+            <td class="sum"></td>
+          </tr>
+        </tbody>
+      </table>
+      <a class="control newRow" href="#">+ Nueva fila</a>
+    </div>
+    <!--.invoice-body-->
+
+    <div class="invoicelist-footer">
+      <table>
+        <tr class="taxrelated">
+          <td>IVA:</td>
+          <td id="total_tax"></td>
+        </tr>
+        <tr>
+          <td><strong>Total:</strong></td>
+          <td id="total_price"></td>
+        </tr>
+      </table>
+    </div>
+
+
+    <div class="product">
+      <br>
+      <br>
+      <img src="image/producto.jpg" alt="">
+    </div>
+    <!--.product-->
+
+    <div class="note" contenteditable>
+      <h2>Nota:</h2>
+    </div>
+    <!--.note-->
+
+    <footer class="row">
+      <div class="col-1 text-center">
+        <p class="notaxrelated" contenteditable>
+          El monto de la factura no incluye el impuesto sobre las ventas.
+        </p>
+      </div>
+    </footer>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script>
+      window.jQuery ||
+        document.write(
+          '<script src="assets/bower_components/jquery/dist/jquery.min.js"><\/script>'
+        );
+    </script>
+    <script src="main.js"></script>
+  </body>
+</html>
