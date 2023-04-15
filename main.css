@@ -226,7 +226,7 @@ th {
 }
 
 html {
-    font-size: 15px;
+    font-size: 13px;
     line-height: 1.5;
     color: #000;
     background: #ddd;
@@ -288,6 +288,10 @@ p {
     display: block;
     width: 100%;
     font-size: 0
+}
+
+.row li{
+    font-size: 10px
 }
 
 .col,
