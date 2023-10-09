@@ -15,7 +15,7 @@ function init_date() {
   var today =
     day + "-" + month + "-" + now.getFullYear().toString().substr(2, 2);
 
-  var intwoweeks = new Date(now.getTime() + 14 * 24 * 60 * 60 * 1000);
+  var intwoweeks = new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000);
   var month = intwoweeks.getMonth() + 1;
   var day = intwoweeks.getDate();
   if (month < 10) {
@@ -68,7 +68,7 @@ function calculate() {
 }
 
 var newRow =
-  '<tr><td><a class="control removeRow" href="#">x</a><span contenteditable>00001</span></td><td><span contenteditable>Gorro de Egresado confeccionado en tela jersey <br>Borla hilo de seda  <br>Nombre impreso en el frente + Promo 23</span></td><td class="amount"><input type="text" value="1"/></td><td class="rate"><input type="text" value="1100" /></td><td class="tax taxrelated"></td><td class="sum"></td></tr>';
+  '<tr><td><a class="control removeRow" href="#">x</a><span contenteditable>00001</span></td><td><span contenteditable>Gorro de Egresado confeccionado en tela jersey <br>Borla hilo de seda  <br>Nombre impreso en el frente + Promo 23</span></td><td class="amount"><input type="text" value="1"/></td><td class="rate"><input type="text" value="1600" /></td><td class="tax taxrelated"></td><td class="sum"></td></tr>';
 
 $(".invoicelist-body").on("keyup", "input", function () {
   calculate();
