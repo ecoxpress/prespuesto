@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Determinación de Forma Corporal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        descripLabel {
+            display: block;
+            margin-bottom: 8x;
+            //font-weight: bold;
+            color: gray;
+        }
+
+        
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 1.2em;
+            text-align: center;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Forma Corporal</h1>
+        
+        <label for="busto">Medida del Busto (en centímetros):</label>
+         <descripLabel>Alrededor del busto, en su parte más saliente.</descripLabel>
+        <input type="number" id="busto" step="0.1" required>
+        
+        <label for="cintura">Medida de la Cintura (en centímetros):</label>
+        <descripLabel>Alrededor de la cintura, en su parte más estrecha.</descripLabel>
+        <input type="number" id="cintura" step="0.1" required>
+        
+         <label for="cinturaAlta">Medida 1ra Cadera (en centímetros):</label>
+        <descripLabel>Alrededor de la cadera, a la altura del hueso.</descripLabel>
+        <input type="number" id="cinturaAlta" step="0.1" required>
+        
+        <label for="caderas">Medida 2da Cadera (en centímetros):</label>
+        <descripLabel>En la parte más saliente de la cadera, alrededor de la cola.</descripLabel>
+        <input type="number" id="caderas" step="0.1" required>
+
+        <button onclick="determineBodyShape()">Determinar Forma Corporal</button>
+        <button onclick="resetForm()">Resetear</button>
+
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function determineBodyShape() {
+            const busto = parseFloat(document.getElementById('busto').value);
+            const caderas = parseFloat(document.getElementById('caderas').value);
+            const cintura = parseFloat(document.getElementById('cintura').value);
+            const cinturaAlta = parseFloat(document.getElementById('cinturaAlta').value);
+
+            let result = '';
+
+            // Las condiciones siguen siendo las mismas pero aplicadas a medidas en centímetros
+            const bustoCaderas = busto - caderas;
+            const caderasBusto = caderas - busto;
+            const bustoCintura = busto - cintura;
+            const caderasCintura = caderas - cintura;
+            const caderaCinturaAlta = caderas / cinturaAlta;
+
+            if ((Math.abs(bustoCaderas) <= 2.54 && caderasBusto < 9.14 && bustoCintura >= 22.86) || caderasCintura >= 25.4) {
+                result = 'Reloj de Arena';
+            } else if (caderasBusto >= 9.14 && caderasBusto < 25.4 && caderasCintura >= 22.86 && caderaCinturaAlta < 1.193) {
+                result = 'Reloj de Arena Inferior';
+            } else if (bustoCaderas > 2.54 && bustoCaderas < 25.4 && bustoCintura >= 22.86) {
+                result = 'Reloj de Arena Superior';
+            } else if (caderasBusto > 5.08 && caderasCintura >= 17.78 && caderaCinturaAlta >= 1.193) {
+                result = 'Cuchara';
+            } else if (caderasBusto >= 9.14 && caderasCintura < 22.86) {
+                result = 'Triángulo';
+            } else if (bustoCaderas >= 9.14 && bustoCintura < 22.86) {
+                result = 'Triángulo Invertido';
+            } else if (caderasBusto < 9.14 && bustoCaderas < 9.14 && bustoCintura < 22.86 && caderasCintura < 25.4) {
+                result = 'Rectángulo';
+            } else {
+                result = 'Forma corporal no definida por las condiciones dadas.';
+            }
+
+            document.getElementById('result').innerText = `Forma Corporal: ${result}`;
+        }
+
+        function resetForm() {
+            document.getElementById('busto').value = '';
+            document.getElementById('caderas').value = '';
+            document.getElementById('cintura').value = '';
+            document.getElementById('cinturaAlta').value = '';
+            document.getElementById('result').innerText = '';
+        }
+    </script>
+</body>
+</html>
