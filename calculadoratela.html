@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elasticidad y Encogimiento Tela</title>
+    <style>
+        /* Estilos del cuerpo y contenedor */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .form-section {
+            margin-top: 30px;
+            text-align: center;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+        }
+        .radio-group {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .radio-group label {
+            margin: 0 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+        .radio-group input[type="radio"] {
+            display: none;
+        }
+        .radio-group input[type="radio"]:checked + label {
+            background-color: #28a745;
+            color: #fff;
+            border-color: #28a745;
+        }
+        input[type="number"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            width: 48%;
+            padding: 10px;
+            margin: 5px 1%;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .reset-button {
+            background-color: #dc3545;
+        }
+        .reset-button:hover {
+            background-color: #c82333;
+        }
+        p {
+            text-align: center;
+            font-size: 18px;
+            color: #333;
+        }
+        .error-message {
+            color: #d9534f;
+            font-size: 16px;
+        }
+        .resultado-final {
+            margin-top: 20px;
+        }
+        .hidden {
+            display: none;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #f9f9f9;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Calculadora Porcentaje de Telas</h1>
+
+        <!-- Sección de Selección de Tipo de Cálculo y Medida -->
+        <div id="tipo-calculo-section" class="form-section">
+            <label>Seleccione el tipo de cálculo:</label>
+            <div class="radio-group">
+                <input type="radio" id="elongacion" name="tipo-calculo" value="elongacion">
+                <label for="elongacion">Elasticidad</label>
+
+                <input type="radio" id="encogimiento" name="tipo-calculo" value="encogimiento">
+                <label for="encogimiento">Encogimiento</label>
+            </div>
+
+            <label for="medida-base">Ingrese una medida (ej. Contorno de cadera):</label>
+            <input type="number" id="medida-base" placeholder="Medida base en cm">
+
+            <label for="porcentaje-editable">Porcentaje (%):</label>
+            <input type="number" id="porcentaje-editable" placeholder="Porcentaje a aplicar" step="0.01">
+
+            <button onclick="aplicarCalculo()">Aplicar Cálculo</button>
+            <div id="resultado-ajustado" class="resultado-final"></div>
+        </div>
+
+        <!-- Checkbox para habilitar el cálculo basado en medidas -->
+        <div class="form-section">
+            <input type="checkbox" id="habilitar-calculo" onclick="toggleCalculo()"> 
+            <label for="habilitar-calculo">TEST de estabilidad dimensional de la tela</label>
+        </div>
+
+        <!-- Sección de Cálculo Basado en Medida Inicial y Final -->
+        <div id="calculo-section" class="form-section hidden">
+            <label>Seleccione el tipo de cálculo:</label>
+            <div class="radio-group">
+                <input type="radio" id="elongacion2" name="tipo-calculo2" value="elongacion">
+                <label for="elongacion2">Elasticidad</label>
+
+                <input type="radio" id="encogimiento2" name="tipo-calculo2" value="encogimiento">
+                <label for="encogimiento2">Encogimiento</label>
+            </div>
+
+            <label for="medida-inicial">Medida Inicial (cm):</label>
+            <input type="number" id="medida-inicial" placeholder="Medida inicial: Ejemplo 10">
+
+            <label for="medida-final">Medida Final (cm):</label>
+            <input type="number" id="medida-final" placeholder="Medida final: obtenida después del proceso">
+
+            <p id="error-message" class="error-message"></p>
+            
+            <button onclick="calcular()">Calcular</button>
+            <p id="resultado"></p>
+
+            <!-- Botón para volver al estado anterior -->
+             <button onclick="volverEstadoAnterior()">Volver</button> 
+        </div>
+        <!--
+ <button class="reset-button" onclick="resetear()">Resetear</button>
+        -->
+       
+    </div>
+
+    <script>
+        let porcentajeCalculado = 0;
+
+        function toggleCalculo() {
+            const tipoCalculoSection = document.getElementById('tipo-calculo-section');
+            const calculoSection = document.getElementById('calculo-section');
+            const habilitarCalculo = document.getElementById('habilitar-calculo').checked;
+
+            tipoCalculoSection.classList.toggle('hidden', habilitarCalculo);
+            calculoSection.classList.toggle('hidden', !habilitarCalculo);
+        }
+
+        function calcular() {
+            const tipoCalculo = document.querySelector('#calculo-section input[name="tipo-calculo2"]:checked');
+            if (!tipoCalculo) {
+                alert('Por favor, seleccione el tipo de cálculo.');
+                return;
+            }
+            
+            const medidaInicial = parseFloat(document.getElementById('medida-inicial').value);
+            const medidaFinal = parseFloat(document.getElementById('medida-final').value);
+            const errorMessageElement = document.getElementById('error-message');
+            errorMessageElement.innerText = '';  // Limpiar cualquier mensaje de error previo
+            document.getElementById('resultado').innerText = '';  // Limpiar resultado previo
+
+            if (isNaN(medidaInicial) || isNaN(medidaFinal)) {
+                alert('Por favor, ingrese medidas válidas.');
+                return;
+            }
+
+            if (tipoCalculo.value === 'elongacion') {
+                if (medidaInicial > medidaFinal) {
+                    errorMessageElement.innerText = 'ERROR, la Medida Final no puede ser menor que la Medida Inicial.';
+                    return;
+                }
+                porcentajeCalculado = ((medidaFinal - medidaInicial) / medidaInicial) * 100;
+                document.getElementById('resultado').innerText = `Elongación: ${porcentajeCalculado.toFixed(2)}%`;
+            } else if (tipoCalculo.value === 'encogimiento') {
+                if (medidaInicial < medidaFinal) {
+                    errorMessageElement.innerText = 'ERROR, la Medida Final no puede ser mayor que la Medida Inicial.';
+                    return;
+                }
+                porcentajeCalculado = ((medidaInicial - medidaFinal) / medidaInicial) * 100;
+                document.getElementById('resultado').innerText = `Encogimiento: ${porcentajeCalculado.toFixed(2)}%`;
+            }
+
+            document.getElementById('porcentaje-editable').value = porcentajeCalculado.toFixed(2);
+        }
+
+        function aplicarCalculo() {
+            const tipoCalculo = document.querySelector('#tipo-calculo-section input[name="tipo-calculo"]:checked');
+            if (!tipoCalculo) {
+                alert('Por favor, seleccione el tipo de cálculo.');
+                return;
+            }
+
+            const medidaBase = parseFloat(document.getElementById('medida-base').value);
+            const porcentajeEditable = parseFloat(document.getElementById('porcentaje-editable').value);
+
+            if (isNaN(medidaBase) || isNaN(porcentajeEditable)) {
+                alert('Por favor, ingrese valores numéricos válidos.');
+                return;
+            }
+
+            let resultadoFinal = 0;
+
+            if (tipoCalculo.value === 'elongacion') {
+                resultadoFinal = medidaBase + (medidaBase * (porcentajeEditable / 100));
+            } else if (tipoCalculo.value === 'encogimiento') {
+                resultadoFinal = medidaBase - (medidaBase * (porcentajeEditable / 100));
+            }
+
+            // Mostrar resultados en tabla
+            mostrarResultadosEnTabla(resultadoFinal);
+        }
+
+        function mostrarResultadosEnTabla(resultado) {
+            const resultadoAjustado = resultado.toFixed(2);
+            const resultadoDividido4 = (resultado / 4).toFixed(2);
+            const resultadoDividido2 = (resultado / 2).toFixed(2);
+
+            const tablaHTML = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Resultado (cm)</th>
+                            <th>1/4 (cm)</th>
+                            <th>1/2 (cm)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>${resultadoAjustado}</td>
+                            <td>${resultadoDividido4}</td>
+                            <td>${resultadoDividido2}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            `;
+
+            document.getElementById('resultado-ajustado').innerHTML = tablaHTML;
+        }
+
+        function volverEstadoAnterior() {
+            // Ocultar la sección de cálculo con medidas y mostrar la sección de porcentaje
+            document.getElementById('tipo-calculo-section').classList.remove('hidden');
+            document.getElementById('calculo-section').classList.add('hidden');
+
+            // Limpiar campos de entrada de medida inicial y final
+            document.getElementById('medida-inicial').value = '';
+            document.getElementById('medida-final').value = '';
+            document.getElementById('resultado').innerText = '';
+            document.getElementById('error-message').innerText = '';
+
+            // Desactivar checkbox para restablecer el estado inicial
+            document.getElementById('habilitar-calculo').checked = false;
+
+            // Copiar selección de tipo de cálculo de la segunda sección a la primera sección
+            const tipoCalculoSeleccionado = document.querySelector('#calculo-section input[name="tipo-calculo2"]:checked');
+            if (tipoCalculoSeleccionado) {
+                document.querySelector(`#tipo-calculo-section input[value="${tipoCalculoSeleccionado.value}"]`).checked = true;
+            }
+        }
+
+        function resetear() {
+            document.querySelectorAll('input[type="number"]').forEach(input => input.value = '');
+            document.querySelectorAll('input[type="radio"]').forEach(input => input.checked = false);
+            document.getElementById('resultado-ajustado').innerHTML = '';
+            document.getElementById('resultado').innerText = '';
+            document.getElementById('error-message').innerText = '';
+            document.getElementById('porcentaje-editable').value = '';
+            document.getElementById('tipo-calculo-section').classList.remove('hidden');
+            document.getElementById('calculo-section').classList.add('hidden');
+            document.getElementById('habilitar-calculo').checked = false;
+        }
+    </script>
+</body>
+</html>
