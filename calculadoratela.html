@@ -260,6 +260,7 @@
 
             // Mostrar resultados en tabla
             mostrarResultadosEnTabla(resultadoFinal);
+            document.getElementById('resultado-ajustado').classList.remove('hidden');
         }
 
         function mostrarResultadosEnTabla(resultado) {
@@ -267,7 +268,7 @@
             const resultadoDividido4 = (resultado / 4).toFixed(2);
             const resultadoDividido2 = (resultado / 2).toFixed(2);
 
-            const tablaHTML = `
+            const tablaHTML = `            
                 <table>
                     <thead>
                         <tr>
@@ -294,6 +295,7 @@
             document.getElementById('tipo-calculo-section').classList.remove('hidden');
             document.getElementById('calculo-section').classList.add('hidden');
             document.getElementById('checkbox-section').classList.remove('hidden');
+            document.getElementById('resultado-ajustado').classList.add('hidden');
 
             // Limpiar campos de entrada de medida inicial y final
             document.getElementById('medida-base').value = '';
