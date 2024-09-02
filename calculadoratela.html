@@ -251,9 +251,9 @@
             let resultadoFinal = 0;
 
             if (tipoCalculo.value === 'elongacion') {
-                resultadoFinal = medidaBase + (medidaBase * (porcentajeEditable / 100));
-            } else if (tipoCalculo.value === 'encogimiento') {
                 resultadoFinal = medidaBase - (medidaBase * (porcentajeEditable / 100));
+            } else if (tipoCalculo.value === 'encogimiento') {
+                resultadoFinal = medidaBase + (medidaBase * (porcentajeEditable / 100));
             }
 
             // Mostrar resultados en tabla
