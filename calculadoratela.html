@@ -147,10 +147,16 @@
             <div id="resultado-ajustado" class="resultado-final"></div>
         </div>
 
-        <!-- Checkbox para habilitar el cálculo basado en medidas -->
+        <!-- Checkbox para habilitar el cálculo basado en medidas 
         <div id="checkbox-section" class="form-section">
             <input type="checkbox" id="habilitar-calculo" onclick="toggleCalculo()"> 
             <label2 for="habilitar-calculo">TEST de estabilidad dimensional de la tela</label2>
+        </div>
+        -->
+
+         <!-- Botón para mostrar la sección de cálculo basado en medidas -->
+        <div id="boton-section" class="form-section">
+            <button onclick="mostrarCalculo()">Mostrar Cálculo de Estabilidad Dimensional</button>
         </div>
 
         <!-- Sección de Cálculo Basado en Medida Inicial y Final -->
@@ -187,15 +193,14 @@
     <script>
         let porcentajeCalculado = 0;
 
-        function toggleCalculo() {
+        function mostrarCalculo() {
             const tipoCalculoSection = document.getElementById('tipo-calculo-section');
             const calculoSection = document.getElementById('calculo-section');
-            const habilitarCalculo = document.getElementById('habilitar-calculo').checked;
-            const checkboxSection = document.getElementById('checkbox-section');
+            const botonSection = document.getElementById('boton-section');
 
-            tipoCalculoSection.classList.toggle('hidden', habilitarCalculo);
-            calculoSection.classList.toggle('hidden', !habilitarCalculo);
-             checkboxSection.classList.toggle('hidden', habilitarCalculo);
+            tipoCalculoSection.classList.add('hidden');
+            calculoSection.classList.remove('hidden');
+            botonSection.classList.add('hidden');
         }
 
         function calcular() {
@@ -294,8 +299,9 @@
             // Ocultar la sección de cálculo con medidas y mostrar la sección de porcentaje
             document.getElementById('tipo-calculo-section').classList.remove('hidden');
             document.getElementById('calculo-section').classList.add('hidden');
-            document.getElementById('checkbox-section').classList.remove('hidden');
             document.getElementById('resultado-ajustado').classList.add('hidden');
+            const botonSection = document.getElementById('boton-section');
+            botonSection.classList.remove('hidden');  // Mostrar de nuevo el botón
 
             // Limpiar campos de entrada de medida inicial y final
             document.getElementById('medida-base').value = '';
